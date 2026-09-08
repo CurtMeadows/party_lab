@@ -1,6 +1,11 @@
 import { test, expect, Page } from '@playwright/test';
 import { format, addDays } from 'date-fns';
 
+// The site is seasonally gated (closed May 2 – Oct 16, reopens Oct 17). Freeze
+// the browser clock to this post-reopen date so the suite exercises the live
+// booking flow year-round instead of failing while the real calendar is closed.
+const MOCK_NOW = new Date('2026-10-20T12:00:00');
+
 /**
  * E2E tests for custom time selection in the booking flow
  * Current flow: Venue → Experience → Date & Time → Customer Info → Payment
@@ -68,13 +73,14 @@ async function navigateToDateTime(page: Page) {
 
 test.describe('Booking Flow - Custom Time Selection', () => {
   test.beforeEach(async ({ page }) => {
+    await page.clock.setFixedTime(MOCK_NOW);
     await page.goto('/');
     await page.waitForLoadState('networkidle');
     await page.evaluate(() => localStorage.removeItem('partylab_booking'));
   });
 
   test('Complete booking flow with custom time selection', async ({ page }) => {
-    const targetDate = addDays(new Date(), 5);
+    const targetDate = addDays(MOCK_NOW, 5);
     const targetDateFormatted = format(targetDate, 'MMMM d, yyyy');
 
     await navigateToDateTime(page);
@@ -102,7 +108,7 @@ test.describe('Booking Flow - Custom Time Selection', () => {
   });
 
   test('Custom time validation: End time must be after start time', async ({ page }) => {
-    const targetDate = addDays(new Date(), 5);
+    const targetDate = addDays(MOCK_NOW, 5);
 
     await navigateToDateTime(page);
     await selectCalendarDate(page, targetDate);
@@ -124,7 +130,7 @@ test.describe('Booking Flow - Custom Time Selection', () => {
   });
 
   test('Date accuracy: Selected date matches payment screen date', async ({ page }) => {
-    const targetDate = addDays(new Date(), 7);
+    const targetDate = addDays(MOCK_NOW, 7);
     const targetDateFormatted = format(targetDate, 'MMMM d, yyyy');
 
     await navigateToDateTime(page);

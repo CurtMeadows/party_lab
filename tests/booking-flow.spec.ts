@@ -1,6 +1,11 @@
 import { test, expect, Page } from '@playwright/test';
 import { format, addDays } from 'date-fns';
 
+// The site is seasonally gated (closed May 2 – Oct 16, reopens Oct 17). Freeze
+// the browser clock to this post-reopen date so the suite exercises the live
+// booking flow year-round instead of failing while the real calendar is closed.
+const MOCK_NOW = new Date('2026-10-20T12:00:00');
+
 async function selectCalendarDate(page: Page, targetDate: Date) {
   const targetDay = targetDate.getDate();
   const targetMonthYear = format(targetDate, 'MMMM yyyy');
@@ -42,6 +47,7 @@ async function goToDateTime(page: Page) {
 
 test.describe('Booking Flow', () => {
   test.beforeEach(async ({ page }) => {
+    await page.clock.setFixedTime(MOCK_NOW);
     await page.goto('/');
     await page.waitForLoadState('networkidle');
     await page.evaluate(() => localStorage.removeItem('partylab_booking'));
@@ -49,7 +55,7 @@ test.describe('Booking Flow', () => {
 
   test('Step 1 — Venue selection loads with all 3 venues', async ({ page }) => {
     await page.getByRole('button', { name: /book now/i }).first().click();
-    await expect(page.getByRole('heading', { name: 'Choose Your Venue', exact: true })).toBeVisible({ timeout: 5000 });
+    await expect(page.getByRole('heading', { name: 'Choose Your Venue', exact: true }).first()).toBeVisible({ timeout: 5000 });
     await expect(page.getByRole('button', { name: /dance dome/i }).first()).toBeVisible();
     await expect(page.getByRole('button', { name: /light haus/i }).first()).toBeVisible();
     await expect(page.getByRole('button', { name: /club noir/i }).first()).toBeVisible();
@@ -74,7 +80,7 @@ test.describe('Booking Flow', () => {
   });
 
   test('Step 4 — Customer form validation works', async ({ page }) => {
-    const targetDate = addDays(new Date(), 5);
+    const targetDate = addDays(MOCK_NOW, 5);
     await goToDateTime(page);
     await selectCalendarDate(page, targetDate);
     await expect(page.getByText('Start Time')).toBeVisible({ timeout: 10000 });
@@ -97,7 +103,7 @@ test.describe('Booking Flow', () => {
   });
 
   test('Complete flow — reaches payment screen with correct date and deposit', async ({ page }) => {
-    const targetDate = addDays(new Date(), 5);
+    const targetDate = addDays(MOCK_NOW, 5);
     const targetDateFormatted = format(targetDate, 'MMMM d, yyyy');
 
     await goToDateTime(page);
@@ -117,7 +123,7 @@ test.describe('Booking Flow', () => {
   });
 
   test('Surface type — Grass, Rocks, Driveway options and stakes note', async ({ page }) => {
-    const targetDate = addDays(new Date(), 5);
+    const targetDate = addDays(MOCK_NOW, 5);
     await goToDateTime(page);
     await selectCalendarDate(page, targetDate);
     await expect(page.getByText('Start Time')).toBeVisible({ timeout: 10000 });
