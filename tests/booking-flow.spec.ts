@@ -73,10 +73,10 @@ test.describe('Booking Flow', () => {
     console.log('✅ Step 2: Build Your Own, all add-ons visible, $450 base price');
   });
 
-  test('Step 3 — Date picker shows summer closure notice', async ({ page }) => {
+  test('Step 3 — Date picker shows bookings-open notice', async ({ page }) => {
     await goToDateTime(page);
-    await expect(page.getByText(/May 2|unavailable.*summer|summer.*heat/i).first()).toBeVisible();
-    console.log('✅ Step 3: Summer closure notice visible in date picker');
+    await expect(page.getByText(/bookings are open/i).first()).toBeVisible();
+    console.log('✅ Step 3: Bookings-open notice visible in date picker');
   });
 
   test('Step 4 — Customer form validation works', async ({ page }) => {

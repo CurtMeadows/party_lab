@@ -12,13 +12,12 @@ export function AnnouncementBanner() {
         <PartyPopper className="w-4 h-4 sm:w-5 sm:h-5 text-white shrink-0 mt-0.5 sm:mt-0" />
         <p className="text-white text-xs sm:text-sm leading-snug text-left">
           <span className="font-bold">We&apos;re open again! 🎉</span>
-          {" "}Bookings for the new season start{" "}
-          <span className="font-semibold underline">October 17th</span>.{" "}
+          {" "}Bookings are open now —{" "}
           <a
             href="#request-info"
             className="font-bold underline hover:no-underline transition-all"
           >
-            Book your party
+            book your party
           </a>
           {" "}and let&apos;s get the party started!
         </p>

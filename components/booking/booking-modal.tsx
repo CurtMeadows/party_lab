@@ -7,11 +7,12 @@ import { ProgressIndicator } from "./progress-indicator";
 import { Button } from "@/components/ui/button";
 import type { InitialBookingData } from "@/types/booking";
 
-// Arizona (Phoenix) is UTC-7 year-round (no DST) — use an explicit offset so
-// these gate at Arizona local midnight, not UTC midnight (which would flip
-// the gate ~7 hours early/late relative to the intended Arizona date).
+// Seasonal closure lifted early per owner request (customers emailing to book
+// future events) — reopened effective 2026-09-08, ahead of the original Oct 17
+// target. isSeasonallyClosed() is kept (rather than deleted) so the same
+// mechanism can be reused for next summer's closure.
 const CLOSE_DATE = new Date("2026-05-02T00:00:00-07:00");
-const REOPEN_DATE = new Date("2026-10-17T00:00:00-07:00");
+const REOPEN_DATE = new Date("2026-09-08T00:00:00-07:00");
 const isSeasonallyClosed = () => {
   const now = new Date();
   return now >= CLOSE_DATE && now < REOPEN_DATE;

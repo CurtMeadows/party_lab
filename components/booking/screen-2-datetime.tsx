@@ -262,7 +262,7 @@ export function Screen2DateTime() {
             Select Date
           </h3>
           <div className="mb-3 px-3 py-3 rounded-lg bg-green-500/10 border border-green-500/30 text-xs text-green-500 text-center">
-            <p>🎉 Bookings are open for October 17th and beyond!</p>
+            <p>🎉 Bookings are open now!</p>
           </div>
           <div className="flex justify-center">
             <DayPicker
@@ -271,7 +271,7 @@ export function Screen2DateTime() {
               onSelect={handleDateSelect}
               disabled={[
                 { before: minDate },
-                { after: new Date("2026-05-01T00:00:00-07:00"), before: new Date("2026-10-17T00:00:00-07:00") },
+                { after: new Date("2026-05-01T00:00:00-07:00"), before: new Date("2026-09-08T00:00:00-07:00") },
               ]}
               className="border rounded-lg p-4"
               styles={{
