@@ -262,7 +262,7 @@ export function Screen2DateTime() {
             Select Date
           </h3>
           <div className="mb-3 px-3 py-3 rounded-lg bg-amber-500/10 border border-amber-500/30 text-xs text-amber-500 text-center space-y-1.5">
-            <p>☀️ Bookings unavailable May 2 – Sep 30 due to Arizona summer heat. We reopen October 1!</p>
+            <p>☀️ Bookings unavailable May 2 – Oct 16 due to Arizona summer heat. We reopen October 17!</p>
             <p>
               For special requests or to book a future event,{" "}
               <a
@@ -280,7 +280,7 @@ export function Screen2DateTime() {
               onSelect={handleDateSelect}
               disabled={[
                 { before: minDate },
-                { after: new Date("2026-05-01"), before: new Date("2026-10-01") },
+                { after: new Date("2026-05-01"), before: new Date("2026-10-17") },
               ]}
               className="border rounded-lg p-4"
               styles={{

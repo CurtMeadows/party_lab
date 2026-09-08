@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import type { InitialBookingData } from "@/types/booking";
 
 const CLOSE_DATE = new Date("2026-05-02");
-const REOPEN_DATE = new Date("2026-10-01");
+const REOPEN_DATE = new Date("2026-10-17");
 const isSeasonallyClosed = () => {
   const now = new Date();
   return now >= CLOSE_DATE && now < REOPEN_DATE;
@@ -60,7 +60,7 @@ function SeasonalClosureScreen({ onClose }: { onClose: () => void }) {
               We&apos;re Closed for the Summer
             </h2>
             <p className="text-amber-500 font-semibold text-sm">
-              Closed May 2 – September 30, 2026
+              Closed May 2 – October 16, 2026
             </p>
           </div>
 
