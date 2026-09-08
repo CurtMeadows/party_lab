@@ -210,7 +210,7 @@ export function Screen5Customer() {
         </p>
       </div>
 
-      {!arePreviousStepsCompleted(5) && (
+      {!arePreviousStepsCompleted(4) && (
         <div className="max-w-2xl mx-auto">
           <div className="flex items-start gap-3 p-4 bg-yellow-500/10 border border-yellow-500/50 rounded-lg">
             <AlertCircle className="w-5 h-5 text-yellow-500 flex-shrink-0 mt-0.5" />
