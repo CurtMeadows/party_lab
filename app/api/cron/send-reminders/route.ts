@@ -15,7 +15,12 @@ export async function GET(request: Request) {
     }
     
     const resend = new Resend(process.env.RESEND_API_KEY);
-    // Verify cron secret to prevent unauthorized access
+    // Verify cron secret to prevent unauthorized access. Fail closed if the
+    // secret isn't configured — otherwise "Bearer undefined" would authorize.
+    if (!process.env.CRON_SECRET) {
+      console.error("[CRON] CRON_SECRET is not configured");
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     const authHeader = request.headers.get('authorization');
     if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
