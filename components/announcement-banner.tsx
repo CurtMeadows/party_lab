@@ -1,6 +1,12 @@
+"use client";
+
 import { PartyPopper } from "lucide-react";
 
-export function AnnouncementBanner() {
+interface AnnouncementBannerProps {
+  onBookNowClick: () => void;
+}
+
+export function AnnouncementBanner({ onBookNowClick }: AnnouncementBannerProps) {
   return (
     <div
       className="w-full px-4 py-3 sm:py-4 text-center"
@@ -13,12 +19,13 @@ export function AnnouncementBanner() {
         <p className="text-white text-xs sm:text-sm leading-snug text-left">
           <span className="font-bold">We&apos;re open again! 🎉</span>
           {" "}Bookings are open now —{" "}
-          <a
-            href="#request-info"
+          <button
+            type="button"
+            onClick={onBookNowClick}
             className="font-bold underline hover:no-underline transition-all"
           >
             book your party
-          </a>
+          </button>
           {" "}and let&apos;s get the party started!
         </p>
       </div>

@@ -69,7 +69,7 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       {/* Seasonal Announcement Banner */}
-      <AnnouncementBanner />
+      <AnnouncementBanner onBookNowClick={() => handleBookNowClick()} />
 
       {/* Stripe redirect return status */}
       {stripeReturnStatus === "processing" && (
