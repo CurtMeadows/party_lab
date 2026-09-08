@@ -107,12 +107,13 @@ partylabaz@gmail.com
 Instagram: @partylabaz
     `.trim();
 
-    // Send confirmation email to customer
+    // Send customer-facing confirmation to the business inbox for manual review/forwarding
+    // (not directly to the customer, per owner's request while reopening)
     const { error: customerError } = await resend.emails.send({
       from: "The Partylab <bookings@partylabaz.com>",
-      to: [bookingData.customer.email],
-      subject: `Booking Confirmed - ${bookingId}`,
-      text: emailBody,
+      to: ["partylabaz@gmail.com"],
+      subject: `[FOR CUSTOMER] Booking Confirmed - ${bookingId}`,
+      text: `TO FORWARD TO: ${bookingData.customer.email}\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n${emailBody}`,
     });
 
     if (customerError) {
@@ -149,7 +150,7 @@ Remaining Balance: $${bookingData.pricing.total - bookingData.pricing.bookingFee
 Total: $${bookingData.pricing.total}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Customer has been sent a confirmation email.
+A ready-to-forward customer confirmation email was sent separately to this inbox — forward it to the customer above.
     `.trim();
 
     const { error: businessError } = await resend.emails.send({
