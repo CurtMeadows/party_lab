@@ -18,8 +18,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Partylab AZ | Inflatable Nightclub Rentals for Kids Parties | Phoenix Arizona",
-  description: "Partylab brings the party to you! Inflatable nightclub rentals with LED lights, disco ball, fog machine & curated playlists. Perfect for kids birthday parties, teen events, school dances & community events in Phoenix, Scottsdale, Mesa, Tempe & all Arizona. Book now - starting at $250!",
+  title: "Partylab AZ | Inflatable Nightclub Rentals for Kids Parties | East Valley, Arizona",
+  description: "Partylab brings the party to you! Inflatable nightclub rentals with LED lights, disco ball, fog machine & curated playlists. Proudly based in the East Valley — serving Tempe, Mesa, Chandler, Gilbert & Queen Creek — with bookings accepted statewide across Arizona. Book now - starting at $250!",
   icons: {
     icon: "/favicon.ico",
     apple: "/logo-small.png",
@@ -29,17 +29,18 @@ export const metadata: Metadata = {
     "party lab",
     "partylab az",
     "partylabaz",
+    "East Valley party rentals",
     "inflatable nightclub",
     "inflatable nightclub rental",
     "inflatable nightclub for kids",
     "kids party ideas",
     "kids birthday party ideas",
-    "kids birthday party Phoenix",
+    "kids birthday party Tempe",
     "kids dance party",
-    "birthday party entertainment Phoenix",
+    "birthday party entertainment East Valley",
     "birthday party rentals Arizona",
     "teen party ideas",
-    "teen birthday party Phoenix",
+    "teen birthday party Chandler",
     "Sweet 16 party ideas Arizona",
     "inflatable party dome",
     "inflatable disco",
@@ -47,12 +48,13 @@ export const metadata: Metadata = {
     "LED party rental",
     "glow party for kids",
     "bounce house nightclub",
+    "party rentals Tempe",
+    "party rentals Mesa",
+    "party rentals Chandler",
+    "party rentals Gilbert",
+    "party rentals Queen Creek",
     "party rentals Phoenix",
     "party rentals Scottsdale",
-    "party rentals Mesa",
-    "party rentals Tempe",
-    "party rentals Gilbert",
-    "party rentals Chandler",
     "school dance party",
     "PTO event entertainment",
     "school carnival rentals",
@@ -74,7 +76,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://partylabaz.com",
     title: "Partylab AZ | Inflatable Nightclub Rentals for Kids Parties",
-    description: "Partylab brings the party to you! Inflatable nightclub with LED lights, disco ball & fog machine. Perfect for kids birthday parties, teen events & school dances in Phoenix, Arizona.",
+    description: "Partylab brings the party to you! Inflatable nightclub with LED lights, disco ball & fog machine. Based in the East Valley, serving Tempe, Mesa, Chandler & Gilbert, with bookings accepted statewide.",
     siteName: "Partylab AZ",
     images: [
       {
@@ -88,7 +90,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Partylab AZ | Inflatable Nightclub for Kids Parties",
-    description: "Partylab brings the party to you! Inflatable nightclub with LED lights & disco vibes. Perfect for kids birthdays, teen parties & school events in Phoenix, Arizona.",
+    description: "Partylab brings the party to you! Inflatable nightclub with LED lights & disco vibes. Based in the East Valley, with bookings accepted statewide across Arizona.",
     images: ["/hero.JPG"],
     creator: "@partylabaz",
   },
@@ -121,19 +123,19 @@ export default function RootLayout({
     "@type": "LocalBusiness",
     "name": "The Partylab",
     "image": "https://partylabaz.com/hero.JPG",
-    "description": "Partylab AZ offers inflatable nightclub rentals for kids birthday parties, teen events, school dances, and community events. Features LED lighting, disco ball, fog machine, and curated playlists. Serving Phoenix, Scottsdale, Mesa, Tempe, Chandler, Gilbert and all Arizona.",
+    "description": "Partylab AZ offers inflatable nightclub rentals for kids birthday parties, teen events, school dances, and community events. Features LED lighting, disco ball, fog machine, and curated playlists. Based in the East Valley, serving Tempe, Mesa, Chandler, Gilbert, Queen Creek and Phoenix, with bookings accepted statewide across Arizona.",
     "telephone": "(602) 799-5856",
     "email": "partylabaz@gmail.com",
     "address": {
       "@type": "PostalAddress",
-      "addressLocality": "Phoenix",
+      "addressLocality": "Tempe",
       "addressRegion": "AZ",
       "addressCountry": "US"
     },
     "geo": {
       "@type": "GeoCoordinates",
-      "latitude": "33.4484",
-      "longitude": "-112.0740"
+      "latitude": "33.3631",
+      "longitude": "-111.9426"
     },
     "url": "https://partylabaz.com",
     "priceRange": "$250-$600",
@@ -153,8 +155,24 @@ export default function RootLayout({
     },
     "areaServed": [
       {
-        "@type": "State",
-        "name": "Arizona"
+        "@type": "City",
+        "name": "Tempe"
+      },
+      {
+        "@type": "City",
+        "name": "Mesa"
+      },
+      {
+        "@type": "City",
+        "name": "Chandler"
+      },
+      {
+        "@type": "City",
+        "name": "Gilbert"
+      },
+      {
+        "@type": "City",
+        "name": "Queen Creek"
       },
       {
         "@type": "City",
@@ -165,20 +183,8 @@ export default function RootLayout({
         "name": "Scottsdale"
       },
       {
-        "@type": "City",
-        "name": "Mesa"
-      },
-      {
-        "@type": "City",
-        "name": "Tempe"
-      },
-      {
-        "@type": "City",
-        "name": "Chandler"
-      },
-      {
-        "@type": "City",
-        "name": "Gilbert"
+        "@type": "State",
+        "name": "Arizona"
       },
       {
         "@type": "City",
@@ -191,10 +197,6 @@ export default function RootLayout({
       {
         "@type": "City",
         "name": "Surprise"
-      },
-      {
-        "@type": "City",
-        "name": "Queen Creek"
       },
       {
         "@type": "City",

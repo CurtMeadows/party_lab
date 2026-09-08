@@ -110,8 +110,8 @@ export function HeroSection({ onBookNowClick }: HeroSectionProps = {}) {
           {/* Trust Badges */}
           <div className="mt-5 flex flex-col items-center gap-3 mb-4">
             <div className="bg-black/60 backdrop-blur-md rounded-2xl px-8 py-4 text-center">
-              <p className="text-3xl sm:text-4xl font-bold text-accent">AZ</p>
-              <p className="text-sm sm:text-base text-white/90">Statewide Service</p>
+              <p className="text-xl sm:text-2xl font-bold text-accent">East Valley Based</p>
+              <p className="text-sm sm:text-base text-white/90">Statewide bookings welcome</p>
             </div>
             <div className="flex items-center gap-2 text-lg sm:text-xl font-semibold text-white">
               <span className="text-2xl">✅</span>

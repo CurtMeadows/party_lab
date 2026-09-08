@@ -10,11 +10,11 @@ const faqs = [
   },
   {
     question: "What areas do you serve in Arizona?",
-    answer: "We serve the entire Phoenix metro area, including Scottsdale, Mesa, Tempe, Chandler, Gilbert, and surrounding cities within 15 miles at no extra charge. A travel surcharge applies beyond 15 miles: $40 for 15-20 miles, $50 for 21-30 miles, $75 for 31-40 miles. For locations over 40 miles, please contact us."
+    answer: "We're based in the East Valley and proudly serve Tempe, Mesa, Chandler, Gilbert, and Queen Creek within 15 miles at no extra charge — and we accept bookings statewide across Arizona. A travel surcharge applies beyond 15 miles: $40 for 15-20 miles, $50 for 21-30 miles, $75 for 31-40 miles. For locations over 40 miles, please contact us."
   },
   {
     question: "What's included in the rental packages?",
-    answer: "All packages include the inflatable nightclub, LED lighting, sound system, and professional setup/teardown. Higher-tier packages add red carpet, glow kits, and curated playlists with video projection."
+    answer: "All packages include the inflatable nightclub, LED lighting, sound system, and professional setup/teardown. Higher-tier packages add red carpet, glow kits, and curated playlists."
   },
   {
     question: "How many guests can the inflatable nightclub accommodate?",

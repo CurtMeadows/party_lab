@@ -168,9 +168,6 @@ export default function Home() {
                   loading="lazy"
                 />
               </div>
-              <p className="text-muted-foreground">
-                Arizona's premier inflatable nightclub for kids. Bringing the party to you, one event at a time.
-              </p>
             </div>
 
             {/* Contact */}
@@ -238,7 +235,7 @@ export default function Home() {
           </div>
 
           <div className="border-t border-border pt-8 text-center text-sm text-muted-foreground">
-            <p>&copy; {new Date().getFullYear()} The Partylab. All rights reserved. Serving all of Arizona with pride.</p>
+            <p>&copy; {new Date().getFullYear()} The Partylab. All rights reserved. Proudly based in the East Valley, serving all of Arizona.</p>
           </div>
         </div>
       </footer>
