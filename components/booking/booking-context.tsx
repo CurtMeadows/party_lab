@@ -29,7 +29,6 @@ const initialAddOns: AddOns = {
   curatedPlaylist: false,
   wirelessMicrophone: false,
   glowBags: false,
-  themedVideoProjector: false,
   extraHour: false,
   overnightPackage: false,
 };
@@ -75,7 +74,6 @@ export function BookingProvider({ children, initialData }: BookingProviderProps)
           if (addOnId === "curatedPlaylist") addOns.curatedPlaylist = true;
           if (addOnId === "wirelessMicrophone") addOns.wirelessMicrophone = true;
           if (addOnId === "glowBags") addOns.glowBags = true;
-          if (addOnId === "themedVideoProjector") addOns.themedVideoProjector = true;
           if (addOnId === "extraHour") addOns.extraHour = true;
           if (addOnId === "overnightPackage") addOns.overnightPackage = true;
         });
@@ -156,7 +154,6 @@ export function BookingProvider({ children, initialData }: BookingProviderProps)
         (prev.addOns.curatedPlaylist ? 50 : 0) +
         (prev.addOns.wirelessMicrophone ? 50 : 0) +
         (prev.addOns.glowBags ? 50 : 0) +
-        (prev.addOns.themedVideoProjector ? 100 : 0) +
         (prev.addOns.extraHour ? 50 : 0) +
         (prev.addOns.overnightPackage ? 150 : 0);
 
@@ -202,7 +199,6 @@ export function BookingProvider({ children, initialData }: BookingProviderProps)
       if (addOns.curatedPlaylist) addOnTotal += 50;
       if (addOns.wirelessMicrophone) addOnTotal += 50;
       if (addOns.glowBags) addOnTotal += 50;
-      if (addOns.themedVideoProjector) addOnTotal += 100;
       if (addOns.extraHour) addOnTotal += 50;
       if (addOns.overnightPackage) addOnTotal += 150;
 
@@ -213,7 +209,6 @@ export function BookingProvider({ children, initialData }: BookingProviderProps)
         (prev.addOns.curatedPlaylist ? 50 : 0) +
         (prev.addOns.wirelessMicrophone ? 50 : 0) +
         (prev.addOns.glowBags ? 50 : 0) +
-        (prev.addOns.themedVideoProjector ? 100 : 0) +
         (prev.addOns.extraHour ? 50 : 0) +
         (prev.addOns.overnightPackage ? 150 : 0);
 

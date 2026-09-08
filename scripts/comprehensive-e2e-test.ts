@@ -290,7 +290,6 @@ test("BookingData: Required fields exist", () => {
       curatedPlaylist: false,
       wirelessMicrophone: false,
       glowBags: false,
-      themedVideoProjector: false,
       extraHour: false,
       overnightPackage: false,
     },

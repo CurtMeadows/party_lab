@@ -30,7 +30,7 @@ async function run() {
       event_address, event_type, product, package,
       surface_type, space_type, access_path, power_source,
       addon_red_ropes_carpet, addon_glow_bags,
-      addon_themed_video_projector, addon_playlist_projector,
+      addon_playlist_projector,
       addon_extra_hour,
       playlist_request, special_requests,
       payment_status, total
@@ -46,7 +46,6 @@ async function run() {
     const addOns = [
       b.addon_red_ropes_carpet && 'Red Ropes & Carpet',
       b.addon_glow_bags && 'Glow Bags',
-      b.addon_themed_video_projector && 'Themed Video Projector',
       b.addon_playlist_projector && 'Playlist/Projector',
       b.addon_extra_hour && 'Extra Hour',
     ].filter(Boolean);

@@ -37,7 +37,6 @@ export async function sendConfirmationEmail(bookingData: BookingData, bookingId:
     if (bookingData.addOns.curatedPlaylist) addOnsList.push("Curated Playlist (+$50)");
     if (bookingData.addOns.wirelessMicrophone) addOnsList.push("Wireless Microphone (+$50)");
     if (bookingData.addOns.glowBags) addOnsList.push("Glow-Up Party Bags (+$50)");
-    if (bookingData.addOns.themedVideoProjector) addOnsList.push("Themed Video Projector (+$100)");
     if (bookingData.addOns.extraHour) addOnsList.push("Extra Hour (+$50)");
     if (bookingData.addOns.overnightPackage) addOnsList.push("Overnight Package (+$150)");
 

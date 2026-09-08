@@ -34,7 +34,6 @@ export async function createBooking(bookingData: BookingData, paymentIntentId: s
         addon_curated_playlist: bookingData.addOns.curatedPlaylist,
         addon_wireless_microphone: bookingData.addOns.wirelessMicrophone,
         addon_glow_bags: bookingData.addOns.glowBags,
-        addon_themed_video_projector: bookingData.addOns.themedVideoProjector,
         addon_extra_hour: bookingData.addOns.extraHour,
         addon_overnight_package: bookingData.addOns.overnightPackage,
         extra_hours: bookingData.pricing.extraHours,

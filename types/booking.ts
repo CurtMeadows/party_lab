@@ -8,7 +8,6 @@ export interface AddOns {
   curatedPlaylist: boolean;
   wirelessMicrophone: boolean;
   glowBags: boolean;
-  themedVideoProjector: boolean;
   extraHour: boolean;
   overnightPackage: boolean;
 }
@@ -106,7 +105,6 @@ export interface BookingRecord {
   addon_curated_playlist: boolean;
   addon_wireless_microphone: boolean;
   addon_glow_bags: boolean;
-  addon_themed_video_projector: boolean;
   addon_extra_hour: boolean;
   addon_overnight_package: boolean;
   subtotal: number;

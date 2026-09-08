@@ -27,7 +27,6 @@ async function createBooking() {
     addon_red_ropes_carpet: false,
     addon_extra_hour: false,
     addon_glow_bags: false,
-    addon_themed_video_projector: false,
     extra_hours: 0,
     extra_hours_cost: 0,
     trip_charge: 0,

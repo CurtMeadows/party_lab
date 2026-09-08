@@ -91,7 +91,6 @@ export async function GET(request: Request) {
 
         // Build add-ons list
         const addOnsList = [];
-        if (booking.addon_themed_video_projector) addOnsList.push('Themed Video Projector');
         if (booking.addon_playlist_projector) addOnsList.push('Playlist + Projector');
         if (booking.addon_red_ropes_carpet) addOnsList.push('Red Ropes & Carpet');
         if (booking.addon_extra_hour) addOnsList.push('Extra Hour');

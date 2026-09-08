@@ -398,7 +398,7 @@ export function Screen6Payment() {
                 </div>
               </div>
             )}
-            {(bookingData.addOns.discoBall || bookingData.addOns.redRopesCarpet || bookingData.addOns.curatedPlaylist || bookingData.addOns.wirelessMicrophone || bookingData.addOns.glowBags || bookingData.addOns.themedVideoProjector || bookingData.addOns.extraHour || bookingData.addOns.overnightPackage) && (
+            {(bookingData.addOns.discoBall || bookingData.addOns.redRopesCarpet || bookingData.addOns.curatedPlaylist || bookingData.addOns.wirelessMicrophone || bookingData.addOns.glowBags || bookingData.addOns.extraHour || bookingData.addOns.overnightPackage) && (
               <div>
                 <div className="text-muted-foreground mb-1">Add-Ons</div>
                 <ul className="space-y-1">
@@ -416,9 +416,6 @@ export function Screen6Payment() {
                   )}
                   {bookingData.addOns.glowBags && (
                     <li className="text-xs">• Glow-Up Party Bags (+$50)</li>
-                  )}
-                  {bookingData.addOns.themedVideoProjector && (
-                    <li className="text-xs">• Themed Video Projector (+$100)</li>
                   )}
                   {bookingData.addOns.extraHour && (
                     <li className="text-xs">• Extra Hour (+$50)</li>

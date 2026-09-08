@@ -103,12 +103,6 @@ export const ADD_ONS: AddOnOption[] = [
     description: "Party favor bags with glow accessories for up to 15 guests",
   },
   {
-    id: "themedVideoProjector",
-    name: "Themed Video Projector",
-    price: 100,
-    description: "Music video projector with themed visuals for the ultimate nightclub experience",
-  },
-  {
     id: "extraHour",
     name: "Extra Hour",
     price: 50,

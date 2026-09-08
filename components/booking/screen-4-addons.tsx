@@ -32,11 +32,6 @@ export function Screen4AddOns() {
     const selectedPackage = bookingData.package;
 
     return ADD_ONS.filter((addon) => {
-      // Themed Video Projector: Available for all packages
-      if (addon.id === "themedVideoProjector") {
-        return true;
-      }
-
       // These are included in Glow Getter & All-Star VIP
       if (addon.id === "discoBall" || addon.id === "redRopesCarpet" ||
           addon.id === "curatedPlaylist" || addon.id === "wirelessMicrophone" ||

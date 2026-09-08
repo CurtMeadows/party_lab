@@ -79,7 +79,7 @@ export function HeroSection({ onBookNowClick }: HeroSectionProps = {}) {
 
           {/* Subheadline */}
           <p className="text-base sm:text-lg md:text-xl text-white/90 mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed bg-black/50 backdrop-blur-sm rounded-2xl px-6 py-4">
-            Turn any space into a nightclub! Inflatable nightclubs with LED lighting, visual dance videos on a projector, and curated playlists—made for birthdays, teen parties, and unforgettable celebrations.
+            Turn any space into a nightclub! Inflatable nightclubs with LED lighting and curated playlists—made for birthdays, teen parties, and unforgettable celebrations.
           </p>
 
           {/* CTA Buttons — 3 tabs in a row */}
