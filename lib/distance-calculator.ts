@@ -72,12 +72,34 @@ export async function geocodeAddress(address: string): Promise<{ lat: number; ln
 }
 
 /**
+ * Strip the leading street-address segment from a comma-separated address
+ * (e.g. "1 Museum Club Dr, Flagstaff, AZ 86001" -> "Flagstaff, AZ 86001").
+ * The free geocoder sometimes can't resolve a specific street address but
+ * has no trouble with the city/state/zip alone. Returns null if there's
+ * nothing left to simplify.
+ */
+function simplifyAddress(address: string): string | null {
+  const parts = address.split(',').map((p) => p.trim()).filter(Boolean);
+  if (parts.length < 2) return null;
+  const simplified = parts.slice(1).join(', ');
+  return simplified === address ? null : simplified;
+}
+
+/**
  * Calculate distance from starting location to a given address
  * @param address Customer's event address
  * @returns Distance in miles, or null if geocoding fails
  */
 export async function calculateDistanceFromBase(address: string): Promise<number | null> {
-  const coordinates = await geocodeAddress(address);
+  let coordinates = await geocodeAddress(address);
+
+  if (!coordinates) {
+    const simplified = simplifyAddress(address);
+    if (simplified) {
+      console.warn(`Full address geocoding failed, retrying with simplified address: "${simplified}"`);
+      coordinates = await geocodeAddress(simplified);
+    }
+  }
 
   if (!coordinates) {
     return null;
