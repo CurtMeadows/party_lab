@@ -7,8 +7,11 @@ import { ProgressIndicator } from "./progress-indicator";
 import { Button } from "@/components/ui/button";
 import type { InitialBookingData } from "@/types/booking";
 
-const CLOSE_DATE = new Date("2026-05-02");
-const REOPEN_DATE = new Date("2026-10-17");
+// Arizona (Phoenix) is UTC-7 year-round (no DST) — use an explicit offset so
+// these gate at Arizona local midnight, not UTC midnight (which would flip
+// the gate ~7 hours early/late relative to the intended Arizona date).
+const CLOSE_DATE = new Date("2026-05-02T00:00:00-07:00");
+const REOPEN_DATE = new Date("2026-10-17T00:00:00-07:00");
 const isSeasonallyClosed = () => {
   const now = new Date();
   return now >= CLOSE_DATE && now < REOPEN_DATE;

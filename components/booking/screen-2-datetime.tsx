@@ -280,7 +280,7 @@ export function Screen2DateTime() {
               onSelect={handleDateSelect}
               disabled={[
                 { before: minDate },
-                { after: new Date("2026-05-01"), before: new Date("2026-10-17") },
+                { after: new Date("2026-05-01T00:00:00-07:00"), before: new Date("2026-10-17T00:00:00-07:00") },
               ]}
               className="border rounded-lg p-4"
               styles={{
