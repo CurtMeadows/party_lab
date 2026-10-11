@@ -1,7 +1,64 @@
 "use server";
 
+import { Resend } from "resend";
 import { supabaseServer } from "@/lib/supabase-server";
 import type { BookingData } from "@/types/booking";
+
+// How long to wait on the database before treating it as down
+const DB_TIMEOUT_MS = 6000;
+
+// When the database is unreachable the customer has already paid, so the booking
+// must not be lost. Email the full booking to the business inbox and hand back a
+// reference ID so checkout completes normally.
+async function saveBookingByEmail(bookingData: BookingData, paymentIntentId: string, reason: string) {
+  if (!process.env.RESEND_API_KEY) {
+    console.error("RESEND_API_KEY is not configured - cannot save booking by email");
+    return null;
+  }
+
+  const bookingId = `PL-${paymentIntentId.slice(-8).toUpperCase()}`;
+  const resend = new Resend(process.env.RESEND_API_KEY);
+
+  const { error } = await resend.emails.send({
+    from: "Partylab Booking System <bookings@partylabaz.com>",
+    to: ["partylabaz@gmail.com"],
+    subject: `⚠️ ACTION NEEDED: Paid booking NOT saved to database - ${bookingData.customer?.name} - ${bookingData.date}`,
+    text: `
+A customer paid their deposit but the booking could NOT be saved to the database.
+The customer saw a normal confirmation. This email is the only record of the booking.
+
+WHAT TO DO:
+1. Check the calendar for a double booking - availability could not be verified.
+2. Restore the Supabase database (it is probably paused).
+3. Add this booking to the database manually.
+
+Reference ID: ${bookingId}
+Stripe Payment ID: ${paymentIntentId}
+Database error: ${reason}
+
+Product: ${bookingData.product}
+Package: ${bookingData.package}
+Date: ${bookingData.date}
+Time: ${bookingData.timeBlock}
+Name: ${bookingData.customer?.name}
+Email: ${bookingData.customer?.email}
+Phone: ${bookingData.customer?.phone}
+Location: ${bookingData.customer?.address}
+Deposit Paid: $${bookingData.pricing.bookingFee}
+Total: $${bookingData.pricing.total}
+
+FULL BOOKING DATA (for manual entry):
+${JSON.stringify(bookingData, null, 2)}
+    `.trim(),
+  });
+
+  if (error) {
+    console.error("Failed to save booking by email:", error);
+    return null;
+  }
+
+  return bookingId;
+}
 
 export async function createBooking(bookingData: BookingData, paymentIntentId: string) {
   try {
@@ -16,7 +73,7 @@ export async function createBooking(bookingData: BookingData, paymentIntentId: s
     const [startTime, endTime] = bookingData.timeBlock.split("-");
 
     // Insert booking into Supabase using service role client
-    const { data, error } = await supabaseServer
+    const insert = supabaseServer
       .from("bookings")
       .insert({
         product: bookingData.product,
@@ -57,17 +114,42 @@ export async function createBooking(bookingData: BookingData, paymentIntentId: s
       .select()
       .single();
 
-    if (error) {
-      console.error("Supabase error:", error);
+    let dbError: string | null = null;
+    let savedId: string | null = null;
+    try {
+      const { data, error } = await Promise.race([
+        insert,
+        new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error("Database timed out")), DB_TIMEOUT_MS)
+        ),
+      ]);
+      if (error) {
+        dbError = error.message || "Unknown database error";
+      } else {
+        savedId = data.id;
+      }
+    } catch (error) {
+      dbError = error instanceof Error ? error.message : String(error);
+    }
+
+    if (dbError || !savedId) {
+      console.error("Supabase error:", dbError);
+      const fallbackId = await saveBookingByEmail(bookingData, paymentIntentId, dbError || "No booking ID returned");
+      if (!fallbackId) {
+        return {
+          success: false,
+          error: "Failed to create booking in database",
+        };
+      }
       return {
-        success: false,
-        error: "Failed to create booking in database",
+        success: true,
+        bookingId: fallbackId,
       };
     }
 
     return {
       success: true,
-      bookingId: data.id,
+      bookingId: savedId,
     };
   } catch (error) {
     console.error("Error creating booking:", error);

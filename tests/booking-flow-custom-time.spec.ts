@@ -99,7 +99,7 @@ test.describe('Booking Flow - Custom Time Selection', () => {
     await page.getByRole('button', { name: /continue to payment/i }).click();
 
     // Payment screen
-    await expect(page.getByText(/secure payment/i)).toBeVisible({ timeout: 15000 });
+    await expect(page.getByRole('heading', { name: /secure payment/i })).toBeVisible({ timeout: 15000 });
     await expect(page.getByText(targetDateFormatted)).toBeVisible();
     await expect(page.getByText(/6:00 PM/)).toBeVisible();
     await expect(page.getByText(/9:00 PM/)).toBeVisible();
@@ -143,7 +143,7 @@ test.describe('Booking Flow - Custom Time Selection', () => {
     await fillCustomerForm(page);
     await page.getByRole('button', { name: /continue to payment/i }).click();
 
-    await expect(page.getByText(/secure payment/i)).toBeVisible({ timeout: 15000 });
+    await expect(page.getByRole('heading', { name: /secure payment/i })).toBeVisible({ timeout: 15000 });
     await expect(page.getByText(targetDateFormatted)).toBeVisible();
 
     console.log(`✅ Date accuracy confirmed: ${targetDateFormatted} matches on payment screen`);
