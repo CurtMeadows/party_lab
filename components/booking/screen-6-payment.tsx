@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Elements, PaymentElement, useStripe, useElements, PaymentRequestButtonElement } from "@stripe/react-stripe-js";
 import { getStripe } from "@/lib/stripe";
-import { createPaymentIntent } from "@/app/actions/create-payment-intent";
+import { createPaymentIntent, attachBookingToPayment } from "@/app/actions/create-payment-intent";
 import { createBooking } from "@/app/actions/create-booking";
 import { sendConfirmationEmail } from "@/app/actions/send-confirmation-email";
 import { Loader2, CreditCard, Shield, Lock, ChevronDown, ChevronUp, CheckCircle2, Smartphone, Wallet } from "lucide-react";
@@ -271,6 +271,8 @@ export function Screen6Payment() {
     const initializePayment = async () => {
       // If we already have a payment intent AND client secret, reuse them
       if (bookingData.paymentIntentId && bookingData.clientSecret) {
+        // Keep the booking details on the Stripe payment current
+        await attachBookingToPayment(bookingData.paymentIntentId, bookingData).catch(() => {});
         setClientSecret(bookingData.clientSecret);
         setIsLoading(false);
         return;
@@ -281,7 +283,8 @@ export function Screen6Payment() {
         const result = await createPaymentIntent(
           bookingData.pricing.bookingFee,
           bookingData.customer?.email,
-          bookingData.customer?.name
+          bookingData.customer?.name,
+          bookingData
         );
 
         if (result.success && result.clientSecret && result.paymentIntentId) {
