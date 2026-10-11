@@ -14,6 +14,9 @@ import { checkAvailability } from "@/app/actions/check-availability";
 import type { TimeBlock } from "@/types/booking";
 import "react-day-picker/dist/style.css";
 
+// Last event date customers can book (owner request: no bookings from Nov 1, 2026)
+const LAST_BOOKABLE_DATE = new Date("2026-10-31T00:00:00-07:00");
+
 export function Screen2DateTime() {
   const { bookingData, updateDateTime, nextStep } = useBooking();
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(
@@ -262,7 +265,7 @@ export function Screen2DateTime() {
             Select Date
           </h3>
           <div className="mb-3 px-3 py-3 rounded-lg bg-green-500/10 border border-green-500/30 text-xs text-green-500 text-center">
-            <p>🎉 Bookings are open now!</p>
+            <p>🎉 Bookings are open now for dates through October 31!</p>
           </div>
           <div className="flex justify-center">
             <DayPicker
@@ -272,6 +275,7 @@ export function Screen2DateTime() {
               disabled={[
                 { before: minDate },
                 { after: new Date("2026-05-01T00:00:00-07:00"), before: new Date("2026-09-08T00:00:00-07:00") },
+                { after: LAST_BOOKABLE_DATE },
               ]}
               className="border rounded-lg p-4"
               styles={{
