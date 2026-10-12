@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { X, MessageCircle, Mail, Phone } from "lucide-react";
+import { X, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -190,17 +190,6 @@ export function TalkToUsModal({ isOpen, onClose }: TalkToUsModalProps) {
               </p>
 
               <div className="flex flex-col gap-3">
-                {/* Text or Call */}
-                <a
-                  href="sms:6027995856"
-                  className="flex items-center justify-center gap-3 p-3 rounded-lg border border-border hover:bg-muted transition-all group"
-                >
-                  <MessageCircle className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
-                  <div className="flex flex-col items-start">
-                    <span className="font-semibold text-sm">Text Us</span>
-                    <span className="text-xs text-muted-foreground">or call (602) 799-5856</span>
-                  </div>
-                </a>
 
                 {/* Email */}
                 <a

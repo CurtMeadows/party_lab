@@ -3,7 +3,7 @@
 import { useBooking } from "./booking-context";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { CheckCircle2, Calendar, Mail, Phone } from "lucide-react";
+import { CheckCircle2, Calendar, Mail } from "lucide-react";
 import { format } from "date-fns";
 import { formatTime12Hour } from "@/lib/format-time";
 
@@ -133,11 +133,11 @@ export function Screen7Confirmation({ onClose }: Screen7ConfirmationProps) {
             </div>
           </div>
           <div className="flex gap-3">
-            <Phone className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+            <Mail className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
             <div>
               <div className="font-semibold mb-1">Questions?</div>
               <p className="text-sm text-muted-foreground">
-                Call us at (602) 799-5856 or reply to your confirmation email anytime!
+                Reply to your confirmation email anytime!
               </p>
             </div>
           </div>

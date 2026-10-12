@@ -120,8 +120,8 @@ We'll collect the remaining balance of $${remainingBalance} in person when we ar
 
 QUESTIONS OR CHANGES?
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-If you need to make any changes or have questions, please call or text us ASAP:
-📞 (602) 799-5856
+If you need to make any changes or have questions, please email us ASAP:
+📧 partylabaz@gmail.com
 
 We're so excited to bring the nightclub experience to your celebration!
 
@@ -131,7 +131,6 @@ The Partylab Team
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 The Partylab
 Arizona's Premier Inflatable Nightclub for Kids
-(602) 799-5856
 partylabaz@gmail.com
 Instagram: @partylabaz
     `.trim();

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { MessageCircle, Mail, Phone } from "lucide-react";
+import { MessageCircle, Mail } from "lucide-react";
 import { TalkToUsModal } from "@/components/talk-to-us-modal";
 
 export function ContactForm() {
@@ -39,13 +39,6 @@ export function ContactForm() {
                 Or reach out directly:
               </p>
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                <a
-                  href="tel:+16027995856"
-                  className="inline-flex items-center justify-center gap-3 text-lg font-semibold text-foreground hover:text-primary transition-colors"
-                >
-                  <Phone className="w-5 h-5 text-primary" />
-                  (602) 799-5856
-                </a>
                 <a
                   href="mailto:partylabaz@gmail.com"
                   className="inline-flex items-center justify-center gap-3 text-lg font-semibold text-foreground hover:text-primary transition-colors"

@@ -124,7 +124,6 @@ export default function RootLayout({
     "name": "The Partylab",
     "image": "https://partylabaz.com/hero.JPG",
     "description": "Partylab AZ offers inflatable nightclub rentals for kids birthday parties, teen events, school dances, and community events. Features LED lighting, disco ball, fog machine, and curated playlists. Based in the East Valley, serving Tempe, Mesa, Chandler, Gilbert, Queen Creek and Phoenix, with bookings accepted statewide across Arizona.",
-    "telephone": "(602) 799-5856",
     "email": "partylabaz@gmail.com",
     "address": {
       "@type": "PostalAddress",

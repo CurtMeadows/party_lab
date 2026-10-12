@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Calendar, Clock, Phone, Mail, MessageCircle } from "lucide-react";
+import { Calendar, Clock, Mail, MessageCircle } from "lucide-react";
 import { DayPicker } from "react-day-picker";
 import { format, addHours, isAfter } from "date-fns";
 import { TIME_BLOCKS, MIN_HOURS_ADVANCE } from "@/lib/constants";
@@ -214,14 +214,6 @@ export function Screen2DateTime() {
           <span className="text-muted-foreground">Need to book sooner?</span>
           <div className="flex gap-2">
             <a
-              href="tel:6027995856"
-              className="inline-flex items-center gap-1.5 text-primary hover:underline font-medium"
-            >
-              <Phone className="w-4 h-4" />
-              Call/Text
-            </a>
-            <span className="text-muted-foreground">or</span>
-            <a
               href="mailto:partylabaz@gmail.com"
               className="inline-flex items-center gap-1.5 text-primary hover:underline font-medium"
             >
@@ -317,14 +309,6 @@ export function Screen2DateTime() {
               <div className="flex flex-col gap-2 items-center pt-4 border-t border-border">
                 <p className="text-sm text-muted-foreground">Need help finding an available date?</p>
                 <div className="flex gap-2">
-                  <a
-                    href="tel:6027995856"
-                    className="inline-flex items-center gap-1.5 text-primary hover:underline font-medium text-sm"
-                  >
-                    <Phone className="w-4 h-4" />
-                    Call/Text Us
-                  </a>
-                  <span className="text-muted-foreground">or</span>
                   <a
                     href="mailto:partylabaz@gmail.com"
                     className="inline-flex items-center gap-1.5 text-primary hover:underline font-medium text-sm"

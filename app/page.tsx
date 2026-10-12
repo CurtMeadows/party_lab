@@ -7,7 +7,7 @@ import { PackagesSection } from "@/components/packages-section";
 import { ContactForm } from "@/components/contact-form";
 import { FAQSection } from "@/components/faq-section";
 import { BookingModal } from "@/components/booking/booking-modal";
-import { Instagram, Mail, Phone, CheckCircle2, AlertTriangle } from "lucide-react";
+import { Instagram, Mail, CheckCircle2, AlertTriangle } from "lucide-react";
 import { ReviewsSection } from "@/components/reviews-section";
 import Image from "next/image";
 import type { InitialBookingData } from "@/types/booking";
@@ -89,7 +89,7 @@ export default function Home() {
         <div className="w-full px-4 py-4 text-center bg-destructive/20 border-b border-destructive/40">
           <div className="flex items-center justify-center gap-2 text-white font-semibold">
             <AlertTriangle className="w-5 h-5 text-yellow-400" />
-            Your payment was received but we had trouble saving your booking. Please call/text us at (602) 799-5856 right away.
+            Your payment was received but we had trouble saving your booking. Please email us at partylabaz@gmail.com right away.
           </div>
         </div>
       )}
@@ -176,18 +176,6 @@ export default function Home() {
                 Contact Us
               </h4>
               <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <Phone className="w-4 h-4 text-muted-foreground" />
-                  <div>
-                    <p className="text-xs text-muted-foreground">Call or Text</p>
-                    <a
-                      href="tel:+16027995856"
-                      className="text-foreground hover:text-primary transition-colors"
-                    >
-                      (602) 799-5856
-                    </a>
-                  </div>
-                </div>
                 <div className="flex items-center gap-2">
                   <Mail className="w-4 h-4 text-muted-foreground" />
                   <div>

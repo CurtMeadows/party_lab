@@ -95,14 +95,13 @@ NEXT STEPS:
 2. All equipment will be ready for your start time
 3. We'll handle teardown after your event ends
 
-Questions? Call us at (602) 799-5856 or reply to this email.
+Questions? Just reply to this email.
 
 Thanks for choosing The Partylab!
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 The Partylab
 Arizona's Premier Inflatable Nightclub for Kids
-(602) 799-5856
 partylabaz@gmail.com
 Instagram: @partylabaz
     `.trim();

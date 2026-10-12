@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { MapPin, DollarSign, AlertCircle, Phone, Mail } from "lucide-react";
+import { MapPin, DollarSign, AlertCircle, Mail } from "lucide-react";
 
 interface TripChargeModalProps {
   isOpen: boolean;
@@ -106,13 +106,6 @@ export function TripChargeModal({
                 Have questions about the travel surcharge?
               </p>
               <div className="flex flex-col sm:flex-row gap-2 justify-center">
-                <a
-                  href="tel:6027995856"
-                  className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-all text-sm font-medium"
-                >
-                  <Phone className="w-4 h-4" />
-                  Call/Text Us
-                </a>
                 <a
                   href="mailto:partylabaz@gmail.com"
                   className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-all text-sm font-medium"

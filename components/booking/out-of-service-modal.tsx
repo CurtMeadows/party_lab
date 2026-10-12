@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { MapPin, Phone, Mail, AlertTriangle } from "lucide-react";
+import { MapPin, Mail, AlertTriangle } from "lucide-react";
 
 interface OutOfServiceModalProps {
   isOpen: boolean;
@@ -75,13 +75,6 @@ export function OutOfServiceModal({
               We may be able to make special arrangements for your event. Contact us to discuss options:
             </p>
             <div className="flex flex-col sm:flex-row gap-2">
-              <a
-                href="tel:6027995856"
-                className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-all text-sm font-medium"
-              >
-                <Phone className="w-4 h-4" />
-                Call/Text (602) 799-5856
-              </a>
               <a
                 href="mailto:partylabaz@gmail.com"
                 className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-all text-sm font-medium"
