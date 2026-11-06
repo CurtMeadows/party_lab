@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import type { BookingData, AddOns, CustomerInfo, Pricing, InitialBookingData } from "@/types/booking";
-import { BOOKING_FEE, ADD_ONS } from "@/lib/constants";
+import { BOOKING_FEE, BOOKING_STORAGE_KEY, getAddOnsCost } from "@/lib/constants";
 
 interface BookingContextType {
   bookingData: BookingData;
@@ -71,9 +71,7 @@ export function BookingProvider({ children, initialData }: BookingProviderProps)
         initialData.selectedAddOns.forEach((addOnId) => {
           if (addOnId === "discoBall") addOns.discoBall = true;
           if (addOnId === "redRopesCarpet") addOns.redRopesCarpet = true;
-          if (addOnId === "curatedPlaylist") addOns.curatedPlaylist = true;
           if (addOnId === "wirelessMicrophone") addOns.wirelessMicrophone = true;
-          if (addOnId === "glowBags") addOns.glowBags = true;
           if (addOnId === "extraHour") addOns.extraHour = true;
           if (addOnId === "overnightPackage") addOns.overnightPackage = true;
         });
@@ -102,7 +100,7 @@ export function BookingProvider({ children, initialData }: BookingProviderProps)
   useEffect(() => {
     if (initialData) return; // Skip localStorage if we have initial data
 
-    const savedData = localStorage.getItem("partylab_booking");
+    const savedData = localStorage.getItem(BOOKING_STORAGE_KEY);
     if (savedData) {
       try {
         const parsed = JSON.parse(savedData);
@@ -122,7 +120,7 @@ export function BookingProvider({ children, initialData }: BookingProviderProps)
       } catch (error) {
         console.error("Failed to parse saved booking data:", error);
         // Clear corrupted data
-        localStorage.removeItem("partylab_booking");
+        localStorage.removeItem(BOOKING_STORAGE_KEY);
       }
     }
   }, [initialData]);
@@ -130,7 +128,7 @@ export function BookingProvider({ children, initialData }: BookingProviderProps)
   // Save to localStorage whenever bookingData changes
   useEffect(() => {
     if (bookingData.currentStep > 1 || bookingData.product) {
-      localStorage.setItem("partylab_booking", JSON.stringify(bookingData));
+      localStorage.setItem(BOOKING_STORAGE_KEY, JSON.stringify(bookingData));
     }
   }, [bookingData]);
 
@@ -148,14 +146,7 @@ export function BookingProvider({ children, initialData }: BookingProviderProps)
         extraHoursCost = 50 + (75 * (extraHours - 1));
       }
 
-      const currentAddOnsCost =
-        (prev.addOns.discoBall ? 30 : 0) +
-        (prev.addOns.redRopesCarpet ? 75 : 0) +
-        (prev.addOns.curatedPlaylist ? 50 : 0) +
-        (prev.addOns.wirelessMicrophone ? 50 : 0) +
-        (prev.addOns.glowBags ? 50 : 0) +
-        (prev.addOns.extraHour ? 50 : 0) +
-        (prev.addOns.overnightPackage ? 150 : 0);
+      const currentAddOnsCost = getAddOnsCost(prev.addOns);
 
       const basePackagePrice = prev.pricing.subtotal - currentAddOnsCost - prev.pricing.extraHoursCost;
       const newSubtotal = basePackagePrice + currentAddOnsCost + extraHoursCost;
@@ -193,24 +184,10 @@ export function BookingProvider({ children, initialData }: BookingProviderProps)
   const updateAddOns = (addOns: AddOns) => {
     setBookingData((prev) => {
       // Calculate add-on prices
-      let addOnTotal = 0;
-      if (addOns.discoBall) addOnTotal += 30;
-      if (addOns.redRopesCarpet) addOnTotal += 75;
-      if (addOns.curatedPlaylist) addOnTotal += 50;
-      if (addOns.wirelessMicrophone) addOnTotal += 50;
-      if (addOns.glowBags) addOnTotal += 50;
-      if (addOns.extraHour) addOnTotal += 50;
-      if (addOns.overnightPackage) addOnTotal += 150;
+      const addOnTotal = getAddOnsCost(addOns);
 
       // Get base package price from current subtotal (excluding previous add-ons and extra hours)
-      const previousAddOnsCost =
-        (prev.addOns.discoBall ? 30 : 0) +
-        (prev.addOns.redRopesCarpet ? 75 : 0) +
-        (prev.addOns.curatedPlaylist ? 50 : 0) +
-        (prev.addOns.wirelessMicrophone ? 50 : 0) +
-        (prev.addOns.glowBags ? 50 : 0) +
-        (prev.addOns.extraHour ? 50 : 0) +
-        (prev.addOns.overnightPackage ? 150 : 0);
+      const previousAddOnsCost = getAddOnsCost(prev.addOns);
 
       const basePackagePrice = prev.pricing.subtotal - previousAddOnsCost - prev.pricing.extraHoursCost;
 
@@ -269,7 +246,7 @@ export function BookingProvider({ children, initialData }: BookingProviderProps)
 
   const resetBooking = () => {
     setBookingData(initialBookingData);
-    localStorage.removeItem("partylab_booking");
+    localStorage.removeItem(BOOKING_STORAGE_KEY);
   };
 
   // New 6-step flow: 1-Venue, 2-Experience, 3-Date, 4-Info, 5-Payment, 6-Done

@@ -1,60 +1,19 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { AnnouncementBanner } from "@/components/announcement-banner";
+import { useState } from "react";
 import { HeroSection } from "@/components/hero-section";
 import { PackagesSection } from "@/components/packages-section";
 import { ContactForm } from "@/components/contact-form";
 import { FAQSection } from "@/components/faq-section";
-import { BookingModal } from "@/components/booking/booking-modal";
-import { Instagram, Mail, CheckCircle2, AlertTriangle } from "lucide-react";
+import { BookingRequestModal } from "@/components/booking-request-modal";
+import { Instagram, Mail } from "lucide-react";
 import { ReviewsSection } from "@/components/reviews-section";
 import Image from "next/image";
 import type { InitialBookingData } from "@/types/booking";
-import { createBooking } from "@/app/actions/create-booking";
-import { sendConfirmationEmail } from "@/app/actions/send-confirmation-email";
 
 export default function Home() {
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [initialBookingData, setInitialBookingData] = useState<InitialBookingData | undefined>(undefined);
-  const [stripeReturnStatus, setStripeReturnStatus] = useState<"processing" | "success" | "error" | null>(null);
-
-  // Handle Stripe redirect returns (3D Secure, Apple Pay, etc.)
-  // When payment requires a redirect, Stripe returns here with payment_intent params in the URL
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const paymentIntentId = params.get("payment_intent");
-    const redirectStatus = params.get("redirect_status");
-
-    if (!paymentIntentId || redirectStatus !== "succeeded") return;
-
-    // Clean up URL immediately
-    window.history.replaceState({}, "", "/");
-    setStripeReturnStatus("processing");
-
-    const savedData = localStorage.getItem("partylab_booking");
-    if (!savedData) {
-      setStripeReturnStatus("error");
-      return;
-    }
-
-    const bookingData = JSON.parse(savedData);
-
-    (async () => {
-      try {
-        const result = await createBooking(bookingData, paymentIntentId);
-        if (!result.success) {
-          setStripeReturnStatus("error");
-          return;
-        }
-        await sendConfirmationEmail(bookingData, result.bookingId!);
-        localStorage.removeItem("partylab_booking");
-        setStripeReturnStatus("success");
-      } catch {
-        setStripeReturnStatus("error");
-      }
-    })();
-  }, []);
 
   const handleBookNowClick = (initialData?: InitialBookingData) => {
     setInitialBookingData(initialData);
@@ -68,34 +27,8 @@ export default function Home() {
 
   return (
     <main className="min-h-screen">
-      {/* Seasonal Announcement Banner */}
-      <AnnouncementBanner onBookNowClick={() => handleBookNowClick()} />
-
-      {/* Stripe redirect return status */}
-      {stripeReturnStatus === "processing" && (
-        <div className="w-full bg-primary/20 border-b border-primary/40 px-4 py-3 text-center text-sm text-white">
-          Completing your booking, please wait...
-        </div>
-      )}
-      {stripeReturnStatus === "success" && (
-        <div className="w-full px-4 py-4 text-center" style={{ background: "linear-gradient(135deg, #14532d, #15803d)" }}>
-          <div className="flex items-center justify-center gap-2 text-white font-semibold">
-            <CheckCircle2 className="w-5 h-5" />
-            Your booking is confirmed! A confirmation email is on its way.
-          </div>
-        </div>
-      )}
-      {stripeReturnStatus === "error" && (
-        <div className="w-full px-4 py-4 text-center bg-destructive/20 border-b border-destructive/40">
-          <div className="flex items-center justify-center gap-2 text-white font-semibold">
-            <AlertTriangle className="w-5 h-5 text-yellow-400" />
-            Your payment was received but we had trouble saving your booking. Please email us at partylabaz@gmail.com right away.
-          </div>
-        </div>
-      )}
-
-      {/* Booking Modal */}
-      <BookingModal
+      {/* Booking Request Modal — customers request a date, we confirm by email */}
+      <BookingRequestModal
         isOpen={isBookingModalOpen}
         onClose={handleCloseModal}
         initialData={initialBookingData}

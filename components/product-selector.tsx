@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { Check, Users, Maximize2 } from "lucide-react";
+import { BASE_PRICES } from "@/lib/constants";
 
 interface ProductOption {
   name: string;
@@ -21,7 +22,7 @@ const products: ProductOption[] = [
     dimensions: "16x16",
     imageUrl: "/igloo_shape.jpg",
     glowColor: "pink",
-    basePrice: 450,
+    basePrice: BASE_PRICES["Dance Dome"],
   },
   {
     name: "Light Haus",
@@ -30,7 +31,7 @@ const products: ProductOption[] = [
     dimensions: "20x20x12",
     imageUrl: "/box_shape.JPG",
     glowColor: "purple",
-    basePrice: 500,
+    basePrice: BASE_PRICES["Light Haus"],
   },
   {
     name: "Club Noir",
@@ -39,7 +40,7 @@ const products: ProductOption[] = [
     dimensions: "23x16x12",
     imageUrl: "/house_shape.jpg",
     glowColor: "teal",
-    basePrice: 500,
+    basePrice: BASE_PRICES["Club Noir"],
   },
 ];
 

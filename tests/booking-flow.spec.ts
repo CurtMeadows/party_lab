@@ -1,140 +1,141 @@
 import { test, expect, Page } from '@playwright/test';
 import { format, addDays } from 'date-fns';
 
-// The site is seasonally gated (closed May 2 – Oct 16, reopens Oct 17). Freeze
-// the browser clock to this post-reopen date so the suite exercises the live
-// booking flow year-round instead of failing while the real calendar is closed.
-const MOCK_NOW = new Date('2026-10-20T12:00:00');
+// Customers no longer book and pay online. Every "Book" button opens the
+// Request to Book modal, which emails the request to partylabaz@gmail.com.
+// Run the local server with BOOKING_REQUEST_DRY_RUN=1 so these tests never
+// send real email.
 
-async function selectCalendarDate(page: Page, targetDate: Date) {
-  const targetDay = targetDate.getDate();
-  const targetMonthYear = format(targetDate, 'MMMM yyyy');
-  await page.waitForTimeout(500);
-  for (let i = 0; i < 6; i++) {
-    const monthVisible = await page.getByText(targetMonthYear).first().isVisible();
-    if (monthVisible) break;
-    const nextButton = page.locator('button').filter({ has: page.locator('svg[class*="chevron"]') }).last();
-    if (await nextButton.isVisible()) { await nextButton.click(); await page.waitForTimeout(300); }
-  }
-  await page.locator('table button').filter({ hasText: new RegExp(`^${targetDay}$`) }).first().click();
+const requestDate = format(addDays(new Date(), 14), 'yyyy-MM-dd');
+
+function dialog(page: Page) {
+  return page.getByRole('dialog', { name: /request to book|request sent/i });
 }
 
-async function fillCustomerForm(page: Page) {
-  await page.getByLabel(/full name/i).fill('Test Customer');
-  await page.getByLabel(/email/i).fill('test@example.com');
-  await page.getByLabel(/phone/i).fill('602-555-1234');
-  await page.getByLabel(/event address/i).fill('123 Test St, Phoenix, AZ 85001');
-  await page.locator('select#eventType').selectOption('Birthday Party');
-  await page.getByRole('radio', { name: 'Yes' }).first().check();
-  await page.locator('select#surfaceType').selectOption('Grass');
-  await page.getByRole('radio', { name: 'Yes' }).nth(1).check();
-  await page.getByRole('radio', { name: 'Yes' }).nth(2).check();
-  await page.getByRole('radio', { name: 'Yes' }).nth(3).check();
-  await page.locator('#terms').check();
+async function openFromHero(page: Page) {
+  await page.getByRole('button', { name: /check availability/i }).first().click();
+  await expect(dialog(page)).toBeVisible({ timeout: 5000 });
 }
 
-async function goToStep2(page: Page) {
-  await page.getByRole('button', { name: /book now/i }).first().click();
-  await page.getByRole('button', { name: /dance dome/i }).first().click();
-  await page.getByRole('button', { name: /continue to experience/i }).click();
+async function fillStep2(page: Page) {
+  const d = dialog(page);
+  await d.getByLabel(/preferred date/i).fill(requestDate);
+  await d.getByLabel(/party start time/i).selectOption('14:00');
+  await d.getByLabel(/type of event/i).selectOption('Birthday Party');
+  await d.getByLabel(/how many guests/i).fill('20');
+  await d.getByLabel(/where will it be set up/i).selectOption('Grass');
+  await d.getByLabel(/party city or address/i).fill('Gilbert, AZ');
+  await d.getByRole('button', { name: /next: your info/i }).click();
 }
 
-async function goToDateTime(page: Page) {
-  await goToStep2(page);
-  await page.getByRole('button', { name: /continue/i }).click();
-  await expect(page.getByRole('heading', { name: /pick your date/i })).toBeVisible({ timeout: 5000 });
+async function fillStep3(page: Page) {
+  const d = dialog(page);
+  await d.getByLabel(/your name/i).fill('Test Customer');
+  await d.getByLabel(/^email/i).fill('test@example.com');
+  await d.getByLabel(/^phone/i).fill('602-555-1234');
+  await d.getByLabel(/how did you hear/i).selectOption('Instagram');
+  await d.getByLabel(/anything else/i).fill('Automated test — please ignore');
 }
 
-test.describe('Booking Flow', () => {
+test.describe('Booking Requests', () => {
   test.beforeEach(async ({ page }) => {
-    await page.clock.setFixedTime(MOCK_NOW);
     await page.goto('/');
     await page.waitForLoadState('networkidle');
-    await page.evaluate(() => localStorage.removeItem('partylab_booking'));
   });
 
-  test('Step 1 — Venue selection loads with all 3 venues', async ({ page }) => {
-    await page.getByRole('button', { name: /book now/i }).first().click();
-    await expect(page.getByRole('heading', { name: 'Choose Your Venue', exact: true }).first()).toBeVisible({ timeout: 5000 });
-    await expect(page.getByRole('button', { name: /dance dome/i }).first()).toBeVisible();
-    await expect(page.getByRole('button', { name: /light haus/i }).first()).toBeVisible();
-    await expect(page.getByRole('button', { name: /club noir/i }).first()).toBeVisible();
-    console.log('✅ Step 1: All 3 venues visible');
+  test('Self-booking is gone — no online checkout anywhere', async ({ page }) => {
+    await expect(page.getByRole('button', { name: /^book now$/i })).toHaveCount(0);
+    await openFromHero(page);
+    await expect(page.getByText(/secure payment/i)).toHaveCount(0);
+    await expect(dialog(page).getByText(/no payment needed/i)).toBeVisible();
+    await expect(page.getByText(/fully insured/i)).toHaveCount(0);
+    await expect(page.getByText(/curated playlist/i)).toHaveCount(0);
+    console.log('✅ No self-booking: hero opens Request to Book, no payment screen');
   });
 
-  test('Step 2 — Experience screen shows Build Your Own with all add-ons', async ({ page }) => {
-    await goToStep2(page);
-    await expect(page.getByRole('heading', { name: /customize your experience/i })).toBeVisible({ timeout: 5000 });
-    // All add-ons visible
-    await expect(page.getByText('Red Ropes & Carpet')).toBeVisible();
-    await expect(page.getByText('Glow-Up Party Bags')).toBeVisible();
-    // Base price shown
-    await expect(page.getByText('$450').first()).toBeVisible();
-    console.log('✅ Step 2: Build Your Own, all add-ons visible, $450 base price');
+  test('Step 1 — venues at new prices and current add-ons only', async ({ page }) => {
+    await openFromHero(page);
+    const d = dialog(page);
+    await expect(d.getByRole('button', { name: /dance dome.*starting at \$500/i })).toBeVisible();
+    await expect(d.getByRole('button', { name: /light haus.*starting at \$600/i })).toBeVisible();
+    await expect(d.getByRole('button', { name: /club noir.*starting at \$600/i })).toBeVisible();
+    await expect(d.getByRole('button', { name: /disco ball.*\+\$50/i })).toBeVisible();
+    await expect(d.getByRole('button', { name: /red ropes & carpet.*\+\$100/i })).toBeVisible();
+    await expect(d.getByRole('button', { name: /wireless microphone.*\+\$50/i })).toBeVisible();
+    await expect(d.getByText(/glow-up party bags/i)).toHaveCount(0);
+    await expect(d.getByText(/curated playlist/i)).toHaveCount(0);
+    console.log('✅ Step 1: $500 / $600 / $600, Disco Ball $50, Red Ropes $100, removed add-ons gone');
   });
 
-  test('Step 3 — Date picker shows bookings-open notice', async ({ page }) => {
-    await goToDateTime(page);
-    await expect(page.getByText(/bookings are open/i).first()).toBeVisible();
-    console.log('✅ Step 3: Bookings-open notice visible in date picker');
+  test('Estimate — Light Haus + Disco Ball + Red Ropes + 4 hours = $800', async ({ page }) => {
+    await openFromHero(page);
+    const d = dialog(page);
+    await d.getByRole('button', { name: /light haus/i }).click();
+    await d.getByRole('button', { name: /disco ball/i }).click();
+    await d.getByRole('button', { name: /red ropes & carpet/i }).click();
+    await d.getByLabel(/how long/i).selectOption('4');
+    await expect(d.getByText('$800', { exact: true })).toBeVisible();
+    console.log('✅ Estimate: $600 + $50 + $100 + $50 = $800');
   });
 
-  test('Step 4 — Customer form validation works', async ({ page }) => {
-    const targetDate = addDays(MOCK_NOW, 5);
-    await goToDateTime(page);
-    await selectCalendarDate(page, targetDate);
-    await expect(page.getByText('Start Time')).toBeVisible({ timeout: 10000 });
-    await page.getByRole('button', { name: /continue to info/i }).click();
+  test('Build Your Party choices carry into the request', async ({ page }) => {
+    const section = page.locator('#packages');
+    await section.scrollIntoViewIfNeeded();
+    await expect(section.getByText('Starting at $500')).toBeVisible();
+    await expect(section.getByText('Starting at $600')).toHaveCount(2);
+    await section.getByRole('button', { name: /dance dome/i }).click();
+    await expect(section.getByRole('button', { name: /glow-up party bags/i })).toHaveCount(0);
+    await expect(section.getByRole('button', { name: /curated playlist/i })).toHaveCount(0);
+    await section.getByRole('button', { name: /disco ball/i }).click();
+    await expect(section.getByText('$550', { exact: true })).toBeVisible();
+    await section.getByRole('button', { name: /request to book/i }).click();
 
-    // Check the terms and try to submit with empty required fields
-    await expect(page.getByLabel(/full name/i)).toBeVisible({ timeout: 5000 });
-    await page.locator('#terms').check();
-    await page.getByRole('button', { name: /continue to payment/i }).click({ force: true });
-
-    await expect(page.getByText(/name is required/i)).toBeVisible();
-    await expect(page.getByText(/email is required/i)).toBeVisible();
-    console.log('✅ Step 4: Validation catches empty required fields');
+    const d = dialog(page);
+    await expect(d).toBeVisible({ timeout: 5000 });
+    await expect(d.getByRole('button', { name: /dance dome/i })).toHaveAttribute('aria-pressed', 'true');
+    await expect(d.getByRole('button', { name: /disco ball/i })).toHaveAttribute('aria-pressed', 'true');
+    await expect(d.getByText('$550', { exact: true })).toBeVisible();
+    console.log('✅ Build Your Party: Dance Dome + Disco Ball = $550, carried into the request');
   });
 
-  test('Pricing — Dance Dome base price is $450', async ({ page }) => {
-    await goToStep2(page);
-    await expect(page.getByText('$450').first()).toBeVisible();
-    console.log('✅ Pricing: Dance Dome base = $450');
+  test('Validation — date, time, location, name, email and phone are required', async ({ page }) => {
+    await openFromHero(page);
+    const d = dialog(page);
+    await d.getByRole('button', { name: /next: date/i }).click();
+    await d.getByRole('button', { name: /next: your info/i }).click();
+    await expect(d.getByText(/please choose a date/i)).toBeVisible();
+    await expect(d.getByText(/please choose a start time/i)).toBeVisible();
+    await expect(d.getByText(/city or address/i).last()).toBeVisible();
+
+    await fillStep2(page);
+    await d.getByLabel(/^email/i).fill('not-an-email');
+    await d.getByRole('button', { name: /send booking request/i }).click();
+    await expect(d.getByText(/name is required/i)).toBeVisible();
+    await expect(d.getByText(/valid email/i)).toBeVisible();
+    await expect(d.getByText(/phone is required/i)).toBeVisible();
+    console.log('✅ Validation: required fields enforced on steps 2 and 3');
   });
 
-  test('Complete flow — reaches payment screen with correct date and deposit', async ({ page }) => {
-    const targetDate = addDays(MOCK_NOW, 5);
-    const targetDateFormatted = format(targetDate, 'MMMM d, yyyy');
+  test('Complete request — sends and shows confirmation with summary', async ({ page }) => {
+    await openFromHero(page);
+    const d = dialog(page);
+    await d.getByRole('button', { name: /club noir/i }).click();
+    await d.getByRole('button', { name: /red ropes & carpet/i }).click();
+    await d.getByRole('button', { name: /next: date/i }).click();
+    await fillStep2(page);
+    await fillStep3(page);
+    await d.getByRole('button', { name: /send booking request/i }).click();
 
-    await goToDateTime(page);
-    await selectCalendarDate(page, targetDate);
-    await expect(page.getByText('Start Time')).toBeVisible({ timeout: 10000 });
-    await page.getByRole('button', { name: /continue to info/i }).click();
-
-    await expect(page.getByLabel(/full name/i)).toBeVisible({ timeout: 5000 });
-    await fillCustomerForm(page);
-    await page.getByRole('button', { name: /continue to payment/i }).click();
-
-    await expect(page.getByRole('heading', { name: /secure payment/i })).toBeVisible({ timeout: 15000 });
-    await expect(page.getByText(targetDateFormatted)).toBeVisible();
-    await expect(page.getByText(/\$100 deposit/i)).toBeVisible();
-
-    console.log(`✅ Complete flow passed: date=${targetDateFormatted}, $100 deposit shown`);
+    await expect(page.getByRole('heading', { name: /request sent/i })).toBeVisible({ timeout: 15000 });
+    await expect(d.getByText(/we got your request/i)).toBeVisible();
+    await expect(d.getByText('test@example.com')).toBeVisible();
+    await expect(d.getByText('$700', { exact: true })).toBeVisible(); // $600 + $100
+    console.log('✅ Complete request: sent, confirmation shows Club Noir + Red Ropes = $700');
   });
 
-  test('Surface type — Grass, Rocks, Driveway options and stakes note', async ({ page }) => {
-    const targetDate = addDays(MOCK_NOW, 5);
-    await goToDateTime(page);
-    await selectCalendarDate(page, targetDate);
-    await expect(page.getByText('Start Time')).toBeVisible({ timeout: 10000 });
-    await page.getByRole('button', { name: /continue to info/i }).click();
-
-    const surfaceSelect = page.locator('select#surfaceType');
-    await expect(surfaceSelect).toBeVisible({ timeout: 5000 });
-    await expect(surfaceSelect.locator('option[value="Grass"]')).toHaveCount(1);
-    await expect(surfaceSelect.locator('option[value="Rocks (need a tarp)"]')).toHaveCount(1);
-    await expect(surfaceSelect.locator('option[value="Driveway"]')).toHaveCount(1);
-    await expect(page.getByText(/stakes or sandbags/i)).toBeVisible();
-    console.log('✅ Surface type: All correct options and helper note visible');
+  test('Announcement banner is gone', async ({ page }) => {
+    await expect(page.getByText(/we.re open again/i)).toHaveCount(0);
+    await expect(page.getByText(/planning a party\?/i)).toHaveCount(0);
+    console.log('✅ Banner removed');
   });
 });

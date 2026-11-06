@@ -14,7 +14,7 @@ const faqs = [
   },
   {
     question: "What's included in the rental packages?",
-    answer: "All packages include the inflatable nightclub, LED lighting, sound system, and professional setup/teardown. Higher-tier packages add red carpet, glow kits, and curated playlists."
+    answer: "Every rental includes the inflatable nightclub, LED lighting, a Bluetooth speaker, a 3-hour rental, and professional setup/teardown. Optional add-ons include a disco ball, red ropes & carpet, and a wireless microphone."
   },
   {
     question: "How many guests can the inflatable nightclub accommodate?",
@@ -31,10 +31,6 @@ const faqs = [
   {
     question: "Can I extend my rental time?",
     answer: "Absolutely! The first extra hour is $50, and each additional hour after that is $75."
-  },
-  {
-    question: "What music themes are available?",
-    answer: "We offer Disney, Glow Dance Party, Pop Star, '90s, EDM, Kpop, and Kids themes. Each includes a curated 1.5-hour playlist with warm-up, high energy, dance games, and finale. Custom playlists are also available!"
   },
 ];
 

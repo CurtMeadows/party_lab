@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ProductSelector } from "./product-selector";
 import { Button } from "@/components/ui/button";
 import { Sparkles, Check } from "lucide-react";
-import { ADD_ONS } from "@/lib/constants";
+import { ADD_ONS, getBasePrice as getProductBasePrice } from "@/lib/constants";
 import type { InitialBookingData, ProductType } from "@/types/booking";
 
 interface PackagesSectionProps {
@@ -16,8 +16,7 @@ export function PackagesSection({ onBookNowClick }: PackagesSectionProps = {}) {
   const [selectedAddOns, setSelectedAddOns] = useState<Set<string>>(new Set());
 
   const getBasePrice = () => {
-    if (selectedProduct === "Dance Dome") return 450;
-    return 500;
+    return getProductBasePrice(selectedProduct);
   };
 
   const getTotal = () => {
@@ -133,7 +132,7 @@ export function PackagesSection({ onBookNowClick }: PackagesSectionProps = {}) {
                   className="text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6 gradient-purple-pink hover:opacity-90 hover:scale-105 transition-all glow-purple text-white font-semibold shadow-xl"
                 >
                   <Sparkles className="w-5 h-5 mr-2" />
-                  Book Now
+                  Request to Book
                 </Button>
               </div>
             </div>

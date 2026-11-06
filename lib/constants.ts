@@ -1,4 +1,4 @@
-import type { Product, Package, AddOnOption } from "@/types/booking";
+import type { Product, Package, AddOnOption, AddOns, ProductType } from "@/types/booking";
 
 export const PRODUCTS: Product[] = [
   {
@@ -48,7 +48,6 @@ export const PACKAGES: Package[] = [
       "Everything in Party Starter",
       "Disco Ball",
       "Red Ropes & Carpet",
-      "Curated Playlist",
       "Wireless Microphone",
       "Glow-Up Party Bags (15)",
     ],
@@ -71,36 +70,39 @@ export const PACKAGES: Package[] = [
   },
 ];
 
+// Starting price for each venue (3-hour rental, LED lighting, speaker, setup & teardown)
+export const BASE_PRICES: Record<ProductType, number> = {
+  "Dance Dome": 500,
+  "Light Haus": 600,
+  "Club Noir": 600,
+};
+
+export function getBasePrice(product: string | null | undefined): number {
+  return BASE_PRICES[product as ProductType] ?? BASE_PRICES["Light Haus"];
+}
+
+// Bumped whenever prices change so a browser never resumes a booking saved
+// with old prices.
+export const BOOKING_STORAGE_KEY = "partylab_booking_v2";
+
 export const ADD_ONS: AddOnOption[] = [
   {
     id: "discoBall",
     name: "Disco Ball",
-    price: 30,
+    price: 50,
     description: "Spinning disco ball with LED spotlight for authentic nightclub vibes",
   },
   {
     id: "redRopesCarpet",
     name: "Red Ropes & Carpet",
-    price: 75,
+    price: 100,
     description: "VIP entrance with red carpet and velvet ropes",
-  },
-  {
-    id: "curatedPlaylist",
-    name: "Curated Playlist",
-    price: 50,
-    description: "Age-appropriate themed playlist curated for your event",
   },
   {
     id: "wirelessMicrophone",
     name: "Wireless Microphone",
     price: 50,
     description: "Wireless microphone for announcements and karaoke",
-  },
-  {
-    id: "glowBags",
-    name: "Glow-Up Party Bags",
-    price: 50,
-    description: "Party favor bags with glow accessories for up to 15 guests",
   },
   {
     id: "extraHour",
@@ -115,6 +117,36 @@ export const ADD_ONS: AddOnOption[] = [
     description: "Unlimited extended hours for all-night events and overnight parties",
   },
 ];
+
+// Booking requests ask for party length separately, so Extra Hour and
+// Overnight are chosen there instead of as add-ons.
+export const REQUEST_ADD_ONS = ADD_ONS.filter(
+  (addOn) => addOn.id !== "extraHour" && addOn.id !== "overnightPackage"
+);
+
+// $50 for the first extra hour, $75 for each hour after that
+export const REQUEST_DURATIONS = [
+  { value: "3", label: "3 hours (included)", price: 0 },
+  { value: "4", label: "4 hours (+$50)", price: 50 },
+  { value: "5", label: "5 hours (+$125)", price: 125 },
+  { value: "6", label: "6 hours (+$200)", price: 200 },
+  { value: "overnight", label: "Overnight (+$150)", price: 150 },
+];
+
+// Total cost of the selected add-ons, priced from ADD_ONS
+export function getAddOnsCost(addOns: AddOns): number {
+  return ADD_ONS.reduce(
+    (sum, addOn) => sum + (addOns[addOn.id as keyof AddOns] ? addOn.price : 0),
+    0
+  );
+}
+
+// "Disco Ball (+$50)" style labels for the selected add-ons
+export function getAddOnLabels(addOns: AddOns): string[] {
+  return ADD_ONS.filter((addOn) => addOns[addOn.id as keyof AddOns]).map(
+    (addOn) => `${addOn.name} (+$${addOn.price})`
+  );
+}
 
 export const TIME_BLOCKS = [
   { value: "10:00-13:00", label: "10:00 AM - 1:00 PM" },

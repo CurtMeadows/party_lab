@@ -4,6 +4,7 @@ import { Resend } from "resend";
 import type { BookingData } from "@/types/booking";
 import { format } from "date-fns";
 import { formatTime12Hour } from "@/lib/format-time";
+import { getAddOnLabels } from "@/lib/constants";
 
 export async function sendConfirmationEmail(bookingData: BookingData, bookingId: string) {
   try {
@@ -31,14 +32,7 @@ export async function sendConfirmationEmail(bookingData: BookingData, bookingId:
     const formattedEndTime = formatTime12Hour(endTime);
 
     // Build add-ons list
-    const addOnsList = [];
-    if (bookingData.addOns.discoBall) addOnsList.push("Disco Ball (+$30)");
-    if (bookingData.addOns.redRopesCarpet) addOnsList.push("Red Ropes & Carpet (+$75)");
-    if (bookingData.addOns.curatedPlaylist) addOnsList.push("Curated Playlist (+$50)");
-    if (bookingData.addOns.wirelessMicrophone) addOnsList.push("Wireless Microphone (+$50)");
-    if (bookingData.addOns.glowBags) addOnsList.push("Glow-Up Party Bags (+$50)");
-    if (bookingData.addOns.extraHour) addOnsList.push("Extra Hour (+$50)");
-    if (bookingData.addOns.overnightPackage) addOnsList.push("Overnight Package (+$150)");
+    const addOnsList = getAddOnLabels(bookingData.addOns);
 
     // Build additional charges list
     const additionalCharges = [];

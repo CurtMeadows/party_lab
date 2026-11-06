@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Partylab AZ | Inflatable Nightclub Rentals for Kids Parties | East Valley, Arizona",
-  description: "Partylab brings the party to you! Inflatable nightclub rentals with LED lights, disco ball, fog machine & curated playlists. Proudly based in the East Valley — serving Tempe, Mesa, Chandler, Gilbert & Queen Creek — with bookings accepted statewide across Arizona. Book now - starting at $250!",
+  description: "Partylab brings the party to you! Inflatable nightclub rentals with LED lights, sound & disco vibes. Proudly based in the East Valley — serving Tempe, Mesa, Chandler, Gilbert & Queen Creek — with bookings accepted statewide across Arizona. Check availability — starting at $500!",
   icons: {
     icon: "/favicon.ico",
     apple: "/logo-small.png",
@@ -76,7 +76,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://partylabaz.com",
     title: "Partylab AZ | Inflatable Nightclub Rentals for Kids Parties",
-    description: "Partylab brings the party to you! Inflatable nightclub with LED lights, disco ball & fog machine. Based in the East Valley, serving Tempe, Mesa, Chandler & Gilbert, with bookings accepted statewide.",
+    description: "Partylab brings the party to you! Inflatable nightclub with LED lights, sound & disco vibes. Based in the East Valley, serving Tempe, Mesa, Chandler & Gilbert, with bookings accepted statewide.",
     siteName: "Partylab AZ",
     images: [
       {
@@ -123,7 +123,7 @@ export default function RootLayout({
     "@type": "LocalBusiness",
     "name": "The Partylab",
     "image": "https://partylabaz.com/hero.JPG",
-    "description": "Partylab AZ offers inflatable nightclub rentals for kids birthday parties, teen events, school dances, and community events. Features LED lighting, disco ball, fog machine, and curated playlists. Based in the East Valley, serving Tempe, Mesa, Chandler, Gilbert, Queen Creek and Phoenix, with bookings accepted statewide across Arizona.",
+    "description": "Partylab AZ offers inflatable nightclub rentals for kids birthday parties, teen events, school dances, and community events. Features LED lighting, sound, and optional disco ball and red carpet add-ons. Based in the East Valley, serving Tempe, Mesa, Chandler, Gilbert, Queen Creek and Phoenix, with bookings accepted statewide across Arizona.",
     "email": "partylabaz@gmail.com",
     "address": {
       "@type": "PostalAddress",
@@ -137,7 +137,7 @@ export default function RootLayout({
       "longitude": "-111.9426"
     },
     "url": "https://partylabaz.com",
-    "priceRange": "$250-$600",
+    "priceRange": "$500+",
     "openingHoursSpecification": {
       "@type": "OpeningHoursSpecification",
       "dayOfWeek": [

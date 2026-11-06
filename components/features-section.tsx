@@ -8,8 +8,8 @@ const features = [
   },
   {
     icon: Music,
-    title: "Curated Playlists",
-    description: "Age-appropriate themed music. No DJ needed.",
+    title: "Bluetooth Sound",
+    description: "Plug in your own playlist. No DJ needed."
   },
   {
     icon: Users,

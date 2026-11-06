@@ -4,7 +4,7 @@ import { useBooking } from "./booking-context";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Users, Maximize2 } from "lucide-react";
-import { PRODUCTS } from "@/lib/constants";
+import { PRODUCTS, getBasePrice as getProductBasePrice } from "@/lib/constants";
 import type { ProductType } from "@/types/booking";
 
 export function Screen1Product() {
@@ -22,7 +22,7 @@ export function Screen1Product() {
 
   // Get base price for each product
   const getBasePrice = (productName: string): number => {
-    return productName === "Dance Dome" ? 450 : 500;
+    return getProductBasePrice(productName);
   };
 
   return (

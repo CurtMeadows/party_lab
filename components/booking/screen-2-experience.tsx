@@ -3,7 +3,7 @@
 import { useBooking } from "./booking-context";
 import { Button } from "@/components/ui/button";
 import { Check, Sparkles } from "lucide-react";
-import { ADD_ONS } from "@/lib/constants";
+import { ADD_ONS, getBasePrice as getProductBasePrice } from "@/lib/constants";
 import type { AddOns } from "@/types/booking";
 
 export function Screen2Experience() {
@@ -11,7 +11,7 @@ export function Screen2Experience() {
 
   // Get product-specific base price
   const getBasePrice = (): number => {
-    return bookingData.product === "Dance Dome" ? 450 : 500;
+    return getProductBasePrice(bookingData.product);
   };
 
   // Calculate total from base + add-ons

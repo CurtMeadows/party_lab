@@ -13,6 +13,7 @@ import { Loader2, CreditCard, Shield, Lock, ChevronDown, ChevronUp, CheckCircle2
 import { format } from "date-fns";
 import type { PaymentRequest } from "@stripe/stripe-js";
 import { formatTime12Hour } from "@/lib/format-time";
+import { BOOKING_STORAGE_KEY, getAddOnLabels } from "@/lib/constants";
 
 function PaymentForm() {
   const stripe = useStripe();
@@ -256,6 +257,7 @@ function PaymentForm() {
 
 export function Screen6Payment() {
   const { bookingData, updateBookingId } = useBooking();
+  const addOnLabels = getAddOnLabels(bookingData.addOns);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSummaryCollapsed, setIsSummaryCollapsed] = useState(false);
@@ -301,7 +303,7 @@ export function Screen6Payment() {
         </p>
         <Button
           onClick={() => {
-            localStorage.removeItem("partylab_booking");
+            localStorage.removeItem(BOOKING_STORAGE_KEY);
             window.location.reload();
           }}
           className="gradient-purple-pink text-white"
@@ -395,31 +397,13 @@ export function Screen6Payment() {
                 </div>
               </div>
             )}
-            {(bookingData.addOns.discoBall || bookingData.addOns.redRopesCarpet || bookingData.addOns.curatedPlaylist || bookingData.addOns.wirelessMicrophone || bookingData.addOns.glowBags || bookingData.addOns.extraHour || bookingData.addOns.overnightPackage) && (
+            {addOnLabels.length > 0 && (
               <div>
                 <div className="text-muted-foreground mb-1">Add-Ons</div>
                 <ul className="space-y-1">
-                  {bookingData.addOns.discoBall && (
-                    <li className="text-xs">• Disco Ball (+$30)</li>
-                  )}
-                  {bookingData.addOns.redRopesCarpet && (
-                    <li className="text-xs">• Red Ropes & Carpet (+$75)</li>
-                  )}
-                  {bookingData.addOns.curatedPlaylist && (
-                    <li className="text-xs">• Curated Playlist (+$50)</li>
-                  )}
-                  {bookingData.addOns.wirelessMicrophone && (
-                    <li className="text-xs">• Wireless Microphone (+$50)</li>
-                  )}
-                  {bookingData.addOns.glowBags && (
-                    <li className="text-xs">• Glow-Up Party Bags (+$50)</li>
-                  )}
-                  {bookingData.addOns.extraHour && (
-                    <li className="text-xs">• Extra Hour (+$50)</li>
-                  )}
-                  {bookingData.addOns.overnightPackage && (
-                    <li className="text-xs">• Overnight Package (+$150)</li>
-                  )}
+                  {addOnLabels.map((label) => (
+                    <li key={label} className="text-xs">• {label}</li>
+                  ))}
                 </ul>
               </div>
             )}

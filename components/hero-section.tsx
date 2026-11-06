@@ -79,7 +79,7 @@ export function HeroSection({ onBookNowClick }: HeroSectionProps = {}) {
 
           {/* Subheadline */}
           <p className="text-base sm:text-lg md:text-xl text-white/90 mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed bg-black/50 backdrop-blur-sm rounded-2xl px-6 py-4">
-            Turn any space into a nightclub! Inflatable nightclubs with LED lighting and curated playlists—made for birthdays, teen parties, and unforgettable celebrations.
+            Turn any space into a nightclub! Inflatable nightclubs with LED lighting and sound—made for birthdays, teen parties, and unforgettable celebrations.
           </p>
 
           {/* CTA Buttons — 3 tabs in a row */}
@@ -103,7 +103,7 @@ export function HeroSection({ onBookNowClick }: HeroSectionProps = {}) {
               onClick={onBookNowClick}
             >
               <Sparkles className="w-5 h-5 sm:w-6 sm:h-6" />
-              <span className="text-xs sm:text-sm font-bold leading-tight">Book Now</span>
+              <span className="text-xs sm:text-sm font-bold leading-tight">Check Availability</span>
             </button>
           </div>
 
@@ -112,10 +112,6 @@ export function HeroSection({ onBookNowClick }: HeroSectionProps = {}) {
             <div className="bg-black/60 backdrop-blur-md rounded-2xl px-8 py-4 text-center">
               <p className="text-xl sm:text-2xl font-bold text-accent">East Valley Based</p>
               <p className="text-sm sm:text-base text-white/90">Statewide bookings welcome</p>
-            </div>
-            <div className="flex items-center gap-2 text-lg sm:text-xl font-semibold text-white">
-              <span className="text-2xl">✅</span>
-              <span>Fully Insured</span>
             </div>
           </div>
 
